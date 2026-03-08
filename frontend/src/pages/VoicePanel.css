@@ -1,0 +1,519 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Share+Tech+Mono&display=swap');
+
+:root {
+  --neon-violet: #bc13fe;
+  --dark-bg: #000000;
+  --glow-soft: rgba(188, 19, 254, 0.15);
+  --glow-mid: rgba(188, 19, 254, 0.4);
+  --glow-hard: rgba(188, 19, 254, 0.8);
+}
+
+/* ── Page Wrapper ── */
+.page-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow: hidden;
+  padding: 60px 40px 40px;
+  background: var(--dark-bg);
+}
+
+.page-wrapper::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(188, 19, 254, 0.03) 2px,
+    rgba(188, 19, 254, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 0;
+  animation: scanPulse 8s ease-in-out infinite;
+}
+
+.page-wrapper::after {
+  content: '';
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 900px;
+  height: 900px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(188,19,254,0.07) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: ambientBreath 6s ease-in-out infinite;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes scanPulse {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 1; }
+}
+@keyframes ambientBreath {
+  0%, 100% { transform: translate(-50%, -50%) scale(1);    opacity: 0.7; }
+  50%       { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+}
+
+/* ── Flowing Border ── */
+.animated-border {
+  position: absolute;
+  inset: 20px;
+  border: 3px solid transparent;
+  border-radius: 20px;
+  background:
+    linear-gradient(var(--dark-bg), var(--dark-bg)) padding-box,
+    linear-gradient(135deg,
+      var(--neon-violet),
+      #4b0082,
+      #1a0033,
+      var(--neon-violet),
+      #ff00ff,
+      var(--neon-violet)
+    ) border-box;
+  background-size: 400% 400%;
+  animation: borderFlow 4s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.animated-border::before,
+.animated-border::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--neon-violet);
+  box-shadow: 0 0 20px 6px var(--neon-violet);
+  animation: cornerSpark 4s linear infinite;
+}
+.animated-border::before { top: -6px;    left: -6px; }
+.animated-border::after  { bottom: -6px; right: -6px; animation-delay: -2s; }
+
+@keyframes cornerSpark {
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  50%       { opacity: 0.3; transform: scale(0.4); }
+}
+@keyframes borderFlow {
+  0%   { background-position: 0%   50%; }
+  100% { background-position: 400% 50%; }
+}
+
+/* ── Container ── */
+.voice-container {
+  z-index: 5;
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  animation: containerFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes containerFadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ══════════════════════════════════════════
+   TITLE — NEON PURPLE + CYBER GLITCH
+   3 layers:
+   base  → white text + deep violet glow
+   ::before → violet slice, shifts LEFT on glitch
+   ::after  → cyan slice, shifts RIGHT (RGB split effect)
+══════════════════════════════════════════ */
+.neon-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 5rem;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: 15px;
+  margin-bottom: 50px;
+  position: relative;
+  overflow: visible;
+  text-shadow:
+    0 0 4px  #fff,
+    0 0 12px #fff,
+    0 0 30px var(--neon-violet),
+    0 0 60px var(--neon-violet),
+    0 0 110px var(--neon-violet),
+    0 0 180px rgba(188,19,254,0.45);
+  animation:
+    titleEntrance 1.2s cubic-bezier(0.16, 1, 0.3, 1) both,
+   
+}
+@keyframes titleGlow {
+  0%,100% {
+    text-shadow:
+      0 0 5px #fff,
+      0 0 20px #bc13fe,
+      0 0 50px #bc13fe;
+  }
+  50% {
+    text-shadow:
+      0 0 10px #fff,
+      0 0 30px #bc13fe,
+      0 0 70px #bc13fe;
+  }
+}
+/* Violet glitch slice — top half */
+ .neon-title::before {
+  content: 'SPOKIO';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 5rem;
+  font-weight: 900;
+  letter-spacing: 15px;
+  color: #bc13fe;
+  clip-path: polygon(0 15%, 100% 15%, 100% 48%, 0 48%);
+  opacity: 0;
+  animation: glitchTop 2.8s infinite;
+  pointer-events: none;
+  text-shadow: none;
+}
+
+/* Cyan glitch slice — bottom half */
+/* This "locks" the glitch so it only stays on the Voice Panel page */
+.neon-title::after {
+  content: 'SPOKIO';
+  position: absolute;
+  top: 0; 
+  left: 0;
+  width: 100%;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 5rem;
+  font-weight: 900;
+  letter-spacing: 15px;
+  color: #b700ff;
+  clip-path: polygon(0 52%, 100% 52%, 100% 85%, 0 85%);
+  opacity: 0;
+  animation: glitchBottom 3s infinite;
+  pointer-events: none;
+  text-shadow: none;
+}
+
+@keyframes titleEntrance {
+  from { opacity: 0; letter-spacing: 40px; filter: blur(10px); }
+  to   { opacity: 1; letter-spacing: 15px; filter: blur(0); }
+}
+
+@keyframes titleGlow {
+  0%, 100% {
+    text-shadow:
+      0 0 4px  #fff,
+      0 0 12px #fff,
+      0 0 30px var(--neon-violet),
+      0 0 60px var(--neon-violet),
+      0 0 110px var(--neon-violet);
+  }
+  50% {
+    text-shadow:
+      0 0 6px  #fff,
+      0 0 20px #fff,
+      0 0 55px var(--neon-violet),
+      0 0 100px var(--neon-violet),
+      0 0 160px var(--neon-violet),
+      0 0 180px #bc13fe;
+  }
+}
+
+/* Violet slice: shoots left then snaps back */
+@keyframes glitchTop {
+  0%,  80%, 100% { opacity: 0; transform: translate(0,    0); }
+  81%            { opacity: 1; transform: translate(-8px, -2px); }
+  83%            { opacity: 0.8; transform: translate(6px,  1px); }
+  85%            { opacity: 1; transform: translate(-4px,  0); }
+  87%            { opacity: 0.6; transform: translate(3px, -1px); }
+  89%            { opacity: 0; transform: translate(0,    0); }
+}
+
+/* Cyan slice: shoots right, staggered by 2 frames */
+@keyframes glitchBottom {
+  0%,  82%, 100% { opacity: 0; transform: translate(0,   0); }
+  83%            { opacity: 0.9; transform: translate(9px,  2px); }
+  85%            { opacity: 0.7; transform: translate(-5px,-1px); }
+  87%            { opacity: 1;   transform: translate(4px,  0); }
+  89%            { opacity: 0.5; transform: translate(-6px, 1px); }
+  91%            { opacity: 0;   transform: translate(0,   0); }
+}
+
+/* ── Input Group ── */
+.input-group {
+  width: 100%;
+  margin-bottom: 30px;
+  animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+}
+
+.neon-input {
+  width: 100%;
+  height: 120px;
+  background: #060606;
+  border: 2px solid var(--neon-violet);
+  border-radius: 10px;
+  color: white;
+  padding: 20px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1.5rem;
+  font-weight: 900;
+  text-align: center;
+  outline: none;
+  box-shadow:
+    0 0 10px rgba(188, 19, 254, 0.2),
+    inset 0 0 30px rgba(188,19,254,0.04);
+  transition: box-shadow 0.4s ease, border-color 0.4s ease, background 0.4s ease;
+  resize: none;
+}
+
+.neon-input::placeholder {
+  color: rgba(188,19,254,0.35);
+  letter-spacing: 3px;
+  animation: placeholderBlink 2.5s step-end infinite;
+}
+
+.neon-input:focus {
+  border-color: #e060ff;
+  background: #0d0010;
+  box-shadow:
+    0 0 25px rgba(188,19,254,0.5),
+    0 0 60px rgba(188,19,254,0.2),
+    inset 0 0 40px rgba(188,19,254,0.08);
+}
+
+@keyframes placeholderBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+/* ── Action Group ── */
+.action-group {
+  margin-bottom: 40px;
+  animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+}
+
+.neon-main-btn {
+  padding: 15px 50px;
+  background: var(--neon-violet);
+  color: black;
+  border: none;
+  border-radius: 5px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 1.2rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  animation: btnIdle 4s ease-in-out infinite 1s;
+}
+
+.neon-main-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+  transition: left 0.5s ease;
+}
+.neon-main-btn:hover::before { left: 100%; }
+
+.neon-main-btn:hover {
+  transform: scale(1.08) translateY(-2px);
+  box-shadow:
+    0 0 30px var(--neon-violet),
+    0 0 80px rgba(188,19,254,0.5),
+    0 8px 30px rgba(188,19,254,0.4);
+}
+.neon-main-btn:active {
+  transform: scale(0.96) translateY(1px);
+  box-shadow: 0 0 15px var(--neon-violet);
+}
+
+@keyframes btnIdle {
+  0%, 100% { box-shadow: 0 0 10px rgba(188,19,254,0.3); }
+  50%       { box-shadow: 0 0 30px rgba(188,19,254,0.7), 0 0 60px rgba(188,19,254,0.3); }
+}
+
+/* ── Volume Group ── */
+.volume-group {
+  margin-bottom: 50px;
+  color: var(--neon-violet);
+  font-weight: 900;
+  font-family: 'Share Tech Mono', monospace;
+  letter-spacing: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;
+}
+
+.neon-slider {
+  -webkit-appearance: none;
+  width: 220px;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--neon-violet) var(--val, 100%), #1a0030 var(--val, 100%));
+  outline: none;
+  cursor: pointer;
+  transition: box-shadow 0.3s;
+}
+.neon-slider:hover { box-shadow: 0 0 12px var(--neon-violet); }
+.neon-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--neon-violet);
+  box-shadow: 0 0 10px var(--neon-violet), 0 0 25px rgba(188,19,254,0.6);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
+}
+.neon-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.4);
+  box-shadow: 0 0 20px var(--neon-violet), 0 0 50px rgba(188,19,254,0.8);
+}
+
+/* ── Word Grid ── */
+.word-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 20px;
+  width: 100%;
+  animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.9s both;
+}
+
+.dynamic-word-btn {
+  background: #0a0a0a;
+  border: 2px solid rgba(188,19,254,0.5);
+  color: #fff;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  padding: 20px 5px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition:
+    background   0.35s ease,
+    color        0.35s ease,
+    border-color 0.35s ease,
+    box-shadow   0.35s ease,
+    transform    0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.dynamic-word-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.12) 50%, transparent 60%);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+/* Normal state for urgent buttons (matches the rest of the grid) */
+.dynamic-word-btn[data-urgent="true"] {
+  border-color: #bc13fe;
+  color: #bc13fe;
+}
+
+/* Hover state ONLY for HELP and PAIN */
+.dynamic-word-btn[data-urgent="true"]:hover {
+  background: #ff1e1e !important; /* Emergency Red background */
+  border-color: #ff1e1e !important;
+  color: #fff !important; /* White text for contrast */
+  box-shadow: 0 0 20px #ff1e1e;
+  transform: scale(1.05);
+}
+.dynamic-word-btn:hover::before { transform: translateX(100%); }
+
+.dynamic-word-btn:hover {
+  background: var(--neon-violet);
+  border-color: #ff80ff;
+  color: #000;
+  box-shadow:
+    0 0 20px var(--neon-violet),
+    0 0 50px rgba(188,19,254,0.4),
+    inset 0 0 20px rgba(255,255,255,0.1);
+  transform: translateY(-4px) scale(1.04);
+}
+.dynamic-word-btn:active {
+  transform: translateY(0) scale(0.97);
+  box-shadow: 0 0 8px var(--neon-violet);
+}
+
+.dynamic-word-btn:nth-child(1)  { animation: btnAppear 0.5s ease 0.9s  both; }
+.dynamic-word-btn:nth-child(2)  { animation: btnAppear 0.5s ease 0.95s both; }
+.dynamic-word-btn:nth-child(3)  { animation: btnAppear 0.5s ease 1.0s  both; }
+.dynamic-word-btn:nth-child(4)  { animation: btnAppear 0.5s ease 1.05s both; }
+.dynamic-word-btn:nth-child(5)  { animation: btnAppear 0.5s ease 1.1s  both; }
+.dynamic-word-btn:nth-child(6)  { animation: btnAppear 0.5s ease 1.15s both; }
+.dynamic-word-btn:nth-child(7)  { animation: btnAppear 0.5s ease 1.2s  both; }
+.dynamic-word-btn:nth-child(8)  { animation: btnAppear 0.5s ease 1.25s both; }
+.dynamic-word-btn:nth-child(9)  { animation: btnAppear 0.5s ease 1.3s  both; }
+.dynamic-word-btn:nth-child(10) { animation: btnAppear 0.5s ease 1.35s both; }
+.dynamic-word-btn:nth-child(11) { animation: btnAppear 0.5s ease 1.4s  both; }
+.dynamic-word-btn:nth-child(12) { animation: btnAppear 0.5s ease 1.45s both; }
+.dynamic-word-btn:nth-child(13) { animation: btnAppear 0.5s ease 1.5s  both; }
+.dynamic-word-btn:nth-child(14) { animation: btnAppear 0.5s ease 1.55s both; }
+.dynamic-word-btn:nth-child(15) { animation: btnAppear 0.5s ease 1.6s  both; }
+.dynamic-word-btn:nth-child(16) { animation: btnAppear 0.5s ease 1.65s both; }
+.dynamic-word-btn:nth-child(17) { animation: btnAppear 0.5s ease 1.7s  both; }
+.dynamic-word-btn:nth-child(18) { animation: btnAppear 0.5s ease 1.75s both; }
+.dynamic-word-btn:nth-child(19) { animation: btnAppear 0.5s ease 1.8s  both; }
+.dynamic-word-btn:nth-child(20) { animation: btnAppear 0.5s ease 1.85s both; }
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(20px); filter: blur(4px); }
+  to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+}
+
+@keyframes btnAppear {
+  from { opacity: 0; transform: scale(0.7) rotateX(30deg); }
+  to   { opacity: 1; transform: scale(1)   rotateX(0); }
+}
+.voice-selector-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  z-index: 20;
+}
+
+.selector-label {
+  color: #bc13fe;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+}
+
+.neon-select {
+  background: #000;
+  color: #fff;
+  border: 1px solid #bc13fe;
+  padding: 10px;
+  font-family: 'Share Tech Mono', monospace;
+  width: 300px;
+  outline: none;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(188, 19, 254, 0.2);
+}
+
+.neon-select option {
+  background: #1a0030;
+  color: #fff;
+}
+.neon-select:hover {
+  border-color: #fff;
+  box-shadow: 0 0 20px rgba(188, 19, 254, 0.6);
+  transition: 0.3s;
+}

@@ -1,0 +1,567 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Share+Tech+Mono&display=swap');
+
+/* ── Page ── */
+.sos-bg {
+  padding: 80px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative; /* CHANGE THIS FROM FIXED TO RELATIVE */
+  min-height: 100vh;
+  width: 100%;
+  background: #000;
+  font-family: 'Share Tech Mono', monospace;
+  z-index: 1; /* Keep it low so the sidebar is always above it */
+}
+
+
+/* Scanlines */
+.sos-bg::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 30, 30, 0.025) 2px,
+    rgba(255, 30, 30, 0.025) 4px
+  );
+  pointer-events: none;
+  z-index: 0;
+  animation: scanPulse 8s ease-in-out infinite;
+}
+
+/* Ambient red breath */
+.sos-bg::after {
+  content: '';
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 900px;
+  height: 900px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,30,30,0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: ambientBreath 6s ease-in-out infinite;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes scanPulse {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1;   }
+}
+@keyframes ambientBreath {
+  0%, 100% { transform: translate(-50%,-50%) scale(1);    opacity: 0.6; }
+  50%       { transform: translate(-50%,-50%) scale(1.2);  opacity: 1;   }
+}
+
+/* ── Animated border (page edge) ── */
+.sos-animated-border {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border: 3px solid transparent;
+  background:
+    linear-gradient(#000, #000) padding-box,
+    linear-gradient(135deg, #ff1e1e, #800000, #1a0000, #ff1e1e, #ff6060, #ff1e1e) border-box;
+  background-size: 400% 400%;
+  animation: borderFlow 4s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+.sos-animated-border::before,
+.sos-animated-border::after {
+  content: '';
+  position: absolute;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: #ff1e1e;
+  box-shadow: 0 0 20px 6px #ff1e1e;
+  animation: cornerSpark 4s linear infinite;
+}
+.sos-animated-border::before { top: -6px; left: -6px; }
+.sos-animated-border::after  { bottom: -6px; right: -6px; animation-delay: -2s; }
+
+@keyframes cornerSpark {
+  0%, 100% { opacity: 1; transform: scale(1);   }
+  50%       { opacity: 0.2; transform: scale(0.3); }
+}
+@keyframes borderFlow {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 400% 50%; }
+}
+
+/* ── Particles ── */
+.sos-particles {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-image: radial-gradient(rgba(255,30,30,0.8) 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.05;
+  animation: particleMove 20s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes particleMove {
+  from { background-position: 0 0; }
+  to   { background-position: 500px 500px; }
+}
+
+/* ── Container ── */
+.sos-container {
+  z-index: 1;
+  width: 100%;
+  max-width: 550px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  animation: containerFadeIn 1s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes containerFadeIn {
+  from { opacity: 0; transform: translateY(30px); filter: blur(8px); }
+  to   { opacity: 1; transform: translateY(0);    filter: blur(0);   }
+}
+
+/* ── Title ── */
+.sos-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 10px;
+  text-align: center;
+  position: relative;
+  text-shadow:
+    0 0 10px #fff,
+    0 0 30px #ff1e1e,
+    0 0 80px #ff1e1e,
+    0 0 150px rgba(255,30,30,0.4);
+  animation: titleEntrance 1.2s cubic-bezier(0.16,1,0.3,1) both, titleGlow 3s ease-in-out infinite 1.2s;
+}
+.sos-title::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  color: #ff1e1e;
+  clip-path: polygon(0 30%, 100% 30%, 100% 55%, 0 55%);
+  animation: glitch 5s infinite;
+  opacity: 0;
+}
+@keyframes titleEntrance {
+  from { opacity: 0; letter-spacing: 35px; filter: blur(10px); }
+  to   { opacity: 1; letter-spacing: 10px; filter: blur(0);    }
+}
+@keyframes titleGlow {
+  0%, 100% { text-shadow: 0 0 10px #fff, 0 0 30px #ff1e1e, 0 0 80px #ff1e1e; }
+  50%       { text-shadow: 0 0 20px #fff, 0 0 60px #ff1e1e, 0 0 150px #ff1e1e, 0 0 220px rgba(255,30,30,0.4); }
+}
+@keyframes glitch {
+  0%, 88%, 100% { transform: translate(0);          opacity: 0;   }
+  89%            { transform: translate(-4px,  1px); opacity: 0.7; }
+  91%            { transform: translate( 4px, -1px); opacity: 0.5; }
+  93%            { transform: translate(-2px,  2px); opacity: 0.8; }
+  95%            { transform: translate( 2px, -2px); opacity: 0;   }
+}
+
+/* ── SOS Button ── */
+.sos-btn-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeSlideUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.4s both;
+}
+
+/* Pulse rings behind button */
+.sos-btn-wrapper::before,
+.sos-btn-wrapper::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgba(255,30,30,0.5);
+  animation: sosPulseRing 2s ease-out infinite;
+}
+.sos-btn-wrapper::after {
+  animation-delay: 1s;
+}
+
+@keyframes sosPulseRing {
+  0%   { width: 140px; height: 140px; opacity: 0.8; }
+  100% { width: 260px; height: 260px; opacity: 0;   }
+}
+
+.sos-main-btn {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ff4444, #cc0000, #800000);
+  border: 3px solid #ff1e1e;
+  color: #fff;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: 4px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 0 30px rgba(255,30,30,0.6),
+    0 0 80px rgba(255,30,30,0.3),
+    inset 0 0 30px rgba(255,100,100,0.1);
+  transition:
+    transform 0.3s cubic-bezier(0.34,1.56,0.64,1),
+    box-shadow 0.3s ease;
+  animation: btnIdlePulse 2.5s ease-in-out infinite 1.5s;
+  z-index: 2;
+}
+
+/* Shimmer sweep */
+.sos-main-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  transition: left 0.5s ease;
+}
+.sos-main-btn:hover::before { left: 100%; }
+
+/* Inner glow ring */
+.sos-main-btn::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,150,150,0.3);
+  pointer-events: none;
+}
+
+.sos-main-btn:hover {
+  transform: scale(1.1) translateY(-4px);
+  box-shadow:
+    0 0 50px rgba(255,30,30,0.9),
+    0 0 120px rgba(255,30,30,0.5),
+    0 15px 40px rgba(0,0,0,0.7),
+    inset 0 0 40px rgba(255,100,100,0.2);
+}
+.sos-main-btn:active {
+  transform: scale(0.94);
+  box-shadow: 0 0 20px rgba(255,30,30,0.5);
+}
+
+/* Active/triggered state */
+.sos-main-btn.sos-triggered {
+  animation: sosTriggerFlash 0.5s ease, btnIdlePulse 1s ease-in-out infinite;
+  background: radial-gradient(circle at 35% 35%, #ff6666, #ff1e1e, #cc0000);
+}
+@keyframes sosTriggerFlash {
+  0%, 100% { transform: scale(1); }
+  25%  { transform: scale(1.2); box-shadow: 0 0 100px rgba(255,30,30,1); }
+  50%  { transform: scale(0.9); }
+  75%  { transform: scale(1.1); }
+}
+
+@keyframes btnIdlePulse {
+  0%, 100% { box-shadow: 0 0 30px rgba(255,30,30,0.5), 0 0 80px rgba(255,30,30,0.2); }
+  50%       { box-shadow: 0 0 55px rgba(255,30,30,0.9), 0 0 120px rgba(255,30,30,0.4); }
+}
+
+/* ── Alert Banner ── */
+.sos-alert-banner {
+  width: 100%;
+  background: rgba(180,0,0,0.15);
+  border: 1px solid #ff1e1e;
+  border-radius: 10px;
+  padding: 18px 20px;
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: #ff6060;
+  text-shadow: 0 0 10px #ff1e1e;
+  position: relative;
+  overflow: hidden;
+  animation: alertAppear 0.5s cubic-bezier(0.34,1.56,0.64,1) both, alertPulse 1.5s ease-in-out infinite 0.5s;
+  display: none;
+}
+.sos-alert-banner.visible {
+  display: block;
+}
+.sos-alert-banner::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,30,30,0.1), transparent);
+  animation: alertSweep 2s ease-in-out infinite;
+}
+@keyframes alertAppear {
+  from { opacity: 0; transform: scaleY(0.5) translateY(-10px); }
+  to   { opacity: 1; transform: scaleY(1)   translateY(0); }
+}
+@keyframes alertPulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(255,30,30,0.3); border-color: #ff1e1e; }
+  50%       { box-shadow: 0 0 30px rgba(255,30,30,0.7), 0 0 60px rgba(255,30,30,0.2); border-color: #ff6060; }
+}
+@keyframes alertSweep {
+  0%   { left: -100%; }
+  100% { left: 200%; }
+}
+
+/* ── Form Card ── */
+.sos-form-card {
+  width: 100%;
+  background: rgba(10,0,0,0.85);
+  border: 1px solid rgba(255,30,30,0.4);
+  border-radius: 12px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  overflow: hidden;
+  animation: fadeSlideUp 0.8s cubic-bezier(0.16,1,0.3,1) 0.6s both;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+.sos-form-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 80px; height: 80px;
+  background: linear-gradient(135deg, rgba(255,30,30,0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+.sos-form-card:focus-within {
+  border-color: #ff4040;
+  box-shadow: 0 0 30px rgba(255,30,30,0.25), inset 0 0 30px rgba(255,30,30,0.04);
+}
+
+.sos-form-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: #ff4040;
+  margin-bottom: 6px;
+  display: block;
+  text-shadow: 0 0 8px rgba(255,30,30,0.5);
+}
+
+.sos-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.sos-input {
+  background: #080000;
+  border: 1px solid #330000;
+  border-radius: 6px;
+  color: #fff;
+  padding: 12px 15px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+.sos-input::placeholder {
+  color: rgba(255,60,60,0.25);
+  letter-spacing: 2px;
+}
+.sos-input:focus {
+  border-color: #ff1e1e;
+  background: #0d0000;
+  box-shadow: 0 0 15px rgba(255,30,30,0.4), inset 0 0 15px rgba(255,30,30,0.05);
+}
+
+/* ── Submit / Save Button ── */
+.sos-save-btn {
+  padding: 14px 30px;
+  background: transparent;
+  border: 2px solid #ff1e1e;
+  border-radius: 6px;
+  color: #ff4040;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition:
+    background  0.3s ease,
+    color       0.3s ease,
+    transform   0.25s cubic-bezier(0.34,1.56,0.64,1),
+    box-shadow  0.3s ease;
+}
+.sos-save-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,30,30,0.2), transparent);
+  transition: left 0.45s ease;
+}
+.sos-save-btn:hover::before { left: 100%; }
+.sos-save-btn:hover {
+  background: #ff1e1e;
+  color: #000;
+  transform: scale(1.04) translateY(-2px);
+  box-shadow: 0 0 25px rgba(255,30,30,0.7), 0 6px 20px rgba(255,30,30,0.4);
+}
+.sos-save-btn:active {
+  transform: scale(0.96);
+}
+
+/* ── Status Line ── */
+.sos-status {
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  text-align: center;
+  color: rgba(255,100,100,0.6);
+  font-family: 'Share Tech Mono', monospace;
+  animation: fadeSlideUp 0.6s cubic-bezier(0.16,1,0.3,1) 1s both, statusBlink 3s step-end infinite 2s;
+}
+@keyframes statusBlink {
+  0%, 100% { opacity: 1;   }
+  50%       { opacity: 0.3; }
+}
+
+/* ── Location badge ── */
+.sos-location-badge {
+  flex-direction: column; /* Stack label and info */
+  align-items: center;
+  gap: 15px;
+  background: rgba(255, 30, 30, 0.15); /* Darker red tint */
+  border: 2px solid #ff1e1e; /* Solid red border */
+  border-radius: 12px;
+  padding: 25px 40px;
+  width: 100%;
+  max-width: 500px;
+  
+  /* Intense Glow Effect */
+  box-shadow: 
+    0 0 20px rgba(255, 30, 30, 0.4), 
+    inset 0 0 15px rgba(255, 30, 30, 0.2);
+  
+  animation: boxEntrance 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+
+}
+.sos-location-badge span {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.3rem; /* Bigger size */
+  font-weight: 900;   /* Boldest weight */
+  letter-spacing: 3px;
+  color: #fff;       /* Bright White for readability */
+  text-shadow: 0 0 10px rgba(255, 30, 30, 0.8);
+  text-align: center;
+  line-height: 1.6;
+}
+.sos-location-dot {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #ff1e1e;
+  box-shadow: 0 0 15px #ff1e1e; 
+  flex-shrink: 0;
+  animation: dotPulse 1.5s ease-in-out infinite;
+  
+}
+@keyframes boxEntrance {
+  from { 
+    opacity: 0; 
+    transform: scale(0.9) translateY(20px); 
+    filter: brightness(2); 
+  }
+  to { 
+    opacity: 1; 
+    transform: scale(1) translateY(0); 
+    filter: brightness(1); 
+  }
+}
+@keyframes dotPulse {
+  0%, 100% { box-shadow: 0 0 6px #ff1e1e;  transform: scale(1);    }
+  50%       { box-shadow: 0 0 20px #ff1e1e; transform: scale(1.4);  }
+}
+
+/* ── Shared ── */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(20px); filter: blur(4px); }
+  to   { opacity: 1; transform: translateY(0);    filter: blur(0);   }
+}
+/* The full page wrapper */
+.sos-page-wrapper {
+  transition: all 0.5s ease;
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+  position: relative;
+  overflow: hidden;
+}
+
+/* THE EMERGENCY MODE ANIMATION */
+.emergency-active {
+  animation: bg-strobe 0.5s infinite;
+}
+
+/* Red flashing background effect */
+@keyframes bg-strobe {
+  0% { background-color: #000; }
+  50% { background-color: #300000; } /* Dark blood red */
+  100% { background-color: #000; }
+}
+
+/* A red glowing border around the whole screen */
+.emergency-active::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 15px solid #ff1e1e;
+  box-shadow: inset 0 0 100px #ff1e1e;
+  z-index: 99;
+  pointer-events: none;
+  animation: border-pulse 0.5s infinite;
+}
+
+@keyframes border-pulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { opacity: 0.5; }
+}
+
+/* The scanning line effect */
+.emergency-scanner {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 20%;
+  background: linear-gradient(to bottom, transparent, rgba(255, 30, 30, 0.5), transparent);
+  z-index: 100;
+  pointer-events: none;
+  animation: scan 2s linear infinite;
+}
+
+@keyframes scan {
+  0% { top: -20%; }
+  100% { top: 120%; }
+}
+
+/* Shaking effect for the container */
+.emergency-active .sos-container {
+  animation: shake 0.1s infinite;
+}
+
+@keyframes shake {
+  0% { transform: translate(1px, 1px); }
+  25% { transform: translate(-1px, -2px); }
+  50% { transform: translate(-2px, 0px); }
+  100% { transform: translate(1px, -1px); }
+}
+
