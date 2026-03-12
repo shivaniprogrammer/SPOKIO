@@ -540,3 +540,17 @@
     top: 16px;
   }
 }
+@media (max-width: 768px) {
+  .mobile-hamburger {
+    display: flex !important;
+  }
+  .sidebar .hamburger {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-hamburger {
+    display: none !important;
+  }
+}
