@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './EmergencySOS.css';
 
-const API_BASE = 'http://127.0.0.1:5000';
+const API_BASE = 'https://spokio.onrender.com';
 
 const EmergencySOS = () => {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '' });
