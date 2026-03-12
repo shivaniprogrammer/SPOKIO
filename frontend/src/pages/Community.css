@@ -1,108 +1,102 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Share+Tech+Mono&display=swap');
 
+:root {
+  --neon-violet: #bc13fe;
+}
+
 /* ── Page ── */
-.community-bg {
-  padding-top: 80px;
+.community-page-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
+  width: 100%;
   min-height: 100vh;
+  padding: 80px 20px 100px;
+  position: relative;
   overflow-x: hidden;
+  background: #000;
 }
 
-/* ── Scanlines ── */
-.community-bg::before {
+/* Scanlines */
+.community-page-container::before {
   content: '';
   position: fixed;
   inset: 0;
   background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(188, 19, 254, 0.025) 2px,
-    rgba(188, 19, 254, 0.025) 4px
+    0deg, transparent, transparent 2px,
+    rgba(188,19,254,0.025) 2px, rgba(188,19,254,0.025) 4px
   );
   pointer-events: none;
   z-index: 0;
   animation: scanPulse 8s ease-in-out infinite;
 }
 
-/* ── Ambient radial breath ── */
-.community-bg::after {
+/* Ambient glow */
+.community-page-container::after {
   content: '';
   position: fixed;
-  top: 50%;
-  left: 50%;
-  translate: -50% -50%;
-  width: 1000px;
-  height: 1000px;
+  top: 50%; left: 50%;
+  width: 1000px; height: 1000px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(188,19,254,0.06) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
   animation: ambientBreath 7s ease-in-out infinite;
+  transform: translate(-50%,-50%);
 }
 
 @keyframes scanPulse {
-  0%, 100% { opacity: 0.5; }
-  50%       { opacity: 1;   }
+  0%,100% { opacity: 0.5; } 50% { opacity: 1; }
 }
 @keyframes ambientBreath {
-  0%, 100% { transform: translate(-50%,-50%) scale(1);    opacity: 0.6; }
-  50%       { transform: translate(-50%,-50%) scale(1.18); opacity: 1;   }
+  0%,100% { transform: translate(-50%,-50%) scale(1); opacity: 0.6; }
+  50% { transform: translate(-50%,-50%) scale(1.18); opacity: 1; }
 }
 
-/* ── Particles ── */
+/* Particles */
 .neon-particles {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
   background-image: radial-gradient(var(--neon-violet) 1px, transparent 1px);
   background-size: 50px 50px;
-  opacity: 0.07;
+  opacity: 0.06;
   animation: particleMove 18s linear infinite;
   pointer-events: none;
   z-index: 0;
 }
-
 @keyframes particleMove {
   from { background-position: 0 0; }
   to   { background-position: 500px 500px; }
 }
 
-/* ── Feed Container ── */
-.feed-container {
+/* ── Content ── */
+.community-content {
   z-index: 1;
   width: 100%;
   max-width: 500px;
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  animation: feedFadeIn 1s cubic-bezier(0.16,1,0.3,1) both;
-}
-
-@keyframes feedFadeIn {
-  from { opacity: 0; transform: translateY(30px); filter: blur(6px); }
-  to   { opacity: 1; transform: translateY(0);    filter: blur(0);   }
+  align-items: center;
 }
 
 /* ── Title ── */
-.neon-title.small {
+.community-main-title {
   font-family: 'Orbitron', sans-serif;
-  font-size: 2.5rem;
-  letter-spacing: 5px;
-  margin-bottom: 20px;
-  position: relative;
+  font-size: 3rem;
+  font-weight: 900;
   color: #fff;
+  letter-spacing: 10px;
+  margin-bottom: 30px;
+  text-align: center;
+  position: relative;
   text-shadow:
     0 0 10px #fff,
     0 0 30px var(--neon-violet),
     0 0 80px var(--neon-violet);
   animation: titleGlow 3s ease-in-out infinite, titleEntrance 1s cubic-bezier(0.16,1,0.3,1) both;
 }
-
-.neon-title.small::before {
+.community-main-title::before {
   content: attr(data-text);
   position: absolute;
   top: 0; left: 0;
@@ -111,139 +105,88 @@
   animation: glitch 6s infinite;
   opacity: 0.5;
 }
-
 @keyframes titleEntrance {
   from { opacity: 0; letter-spacing: 20px; filter: blur(8px); }
-  to   { opacity: 1; letter-spacing: 5px;  filter: blur(0);   }
+  to   { opacity: 1; letter-spacing: 10px; filter: blur(0); }
 }
 @keyframes titleGlow {
-  0%, 100% { text-shadow: 0 0 10px #fff, 0 0 30px var(--neon-violet), 0 0 80px var(--neon-violet); }
-  50%       { text-shadow: 0 0 20px #fff, 0 0 60px var(--neon-violet), 0 0 140px var(--neon-violet); }
+  0%,100% { text-shadow: 0 0 10px #fff, 0 0 30px var(--neon-violet), 0 0 80px var(--neon-violet); }
+  50% { text-shadow: 0 0 20px #fff, 0 0 60px var(--neon-violet), 0 0 140px var(--neon-violet); }
 }
 @keyframes glitch {
-  0%, 88%, 100% { transform: translate(0);        opacity: 0;   }
-  89%            { transform: translate(-4px,  1px); opacity: 0.7; }
-  91%            { transform: translate( 4px, -1px); opacity: 0.5; }
-  93%            { transform: translate(-2px,  2px); opacity: 0.8; }
-  95%            { transform: translate( 2px, -2px); opacity: 0;   }
+  0%,88%,100% { transform: translate(0); opacity: 0; }
+  89% { transform: translate(-4px,1px); opacity: 0.7; }
+  91% { transform: translate(4px,-1px); opacity: 0.5; }
+  93% { transform: translate(-2px,2px); opacity: 0.8; }
+  95% { transform: translate(2px,-2px); opacity: 0; }
 }
 
-/* ── Upload Box ── */
-.upload-box {
-  background: rgba(20, 0, 30, 0.7);
-  padding: 20px;
-  border: 1px dashed var(--neon-violet);
-  border-radius: 10px;
-  margin-bottom: 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-  animation: uploadAppear 0.8s cubic-bezier(0.16,1,0.3,1) 0.3s both;
-  transition: box-shadow 0.4s ease, border-color 0.4s ease;
-}
-
-.upload-box::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(188,19,254,0.06), transparent 60%);
-  pointer-events: none;
-}
-
-.upload-box:focus-within {
-  border-color: #e060ff;
-  box-shadow: 0 0 30px rgba(188,19,254,0.35), inset 0 0 30px rgba(188,19,254,0.05);
-}
-
-@keyframes uploadAppear {
-  from { opacity: 0; transform: scaleY(0.85); filter: blur(4px); }
-  to   { opacity: 1; transform: scaleY(1);    filter: blur(0);   }
+/* ── Comment name input ── */
+.comment-name-input {
+  width: 100%;
+  margin-bottom: 20px;
 }
 
 /* ── Inputs ── */
 .neon-input-small {
-  background: #000;
+  background: #080808;
   border: 1px solid #333;
+  border-radius: 6px;
   color: #fff;
-  padding: 10px;
+  padding: 10px 14px;
   outline: none;
   font-family: 'Share Tech Mono', monospace;
+  font-size: 0.9rem;
+  width: 100%;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 .neon-input-small:focus {
   border-color: var(--neon-violet);
-  box-shadow: 0 0 12px rgba(188,19,254,0.4), inset 0 0 15px rgba(188,19,254,0.05);
+  box-shadow: 0 0 12px rgba(188,19,254,0.4), inset 0 0 12px rgba(188,19,254,0.04);
 }
 .neon-input-small::placeholder {
   color: rgba(188,19,254,0.3);
   letter-spacing: 2px;
 }
 
-/* ── Upload Button ── */
-.upload-btn {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 0.8rem !important;
-  padding: 10px !important;
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
+/* ── Feed ── */
+.feed-container {
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  animation: feedFadeIn 1s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes feedFadeIn {
+  from { opacity: 0; transform: translateY(30px); filter: blur(6px); }
+  to   { opacity: 1; transform: translateY(0); filter: blur(0); }
 }
 
-.upload-btn::before {
-  content: '';
-  position: absolute;
-  top: 0; left: -100%;
-  width: 100%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-  transition: left 0.5s ease;
-}
-.upload-btn:hover::before { left: 100%; }
-.upload-btn:hover {
-  transform: scale(1.05) translateY(-2px);
-  box-shadow: 0 0 25px var(--neon-violet), 0 6px 20px rgba(188,19,254,0.4);
-}
-.upload-btn:active {
-  transform: scale(0.96);
+.feed-status {
+  color: rgba(188,19,254,0.5);
+  text-align: center;
+  font-family: 'Share Tech Mono', monospace;
+  letter-spacing: 3px;
 }
 
 /* ── Cards ── */
 .insta-card {
   background: #0a0a0a;
-  border: 1px solid rgba(188,19,254,0.5);
+  border: 1px solid rgba(188,19,254,0.4);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 0 15px rgba(188,19,254,0.08);
   position: relative;
   z-index: 1;
-  transition:
-    transform    0.4s cubic-bezier(0.34,1.56,0.64,1),
-    box-shadow   0.4s ease,
-    border-color 0.4s ease;
+  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s ease, border-color 0.4s ease;
   animation: cardSlideIn 0.6s cubic-bezier(0.16,1,0.3,1) both;
 }
+.insta-card:nth-child(1) { animation-delay: 0.05s; }
+.insta-card:nth-child(2) { animation-delay: 0.1s; }
+.insta-card:nth-child(3) { animation-delay: 0.15s; }
+.insta-card:nth-child(4) { animation-delay: 0.2s; }
+.insta-card:nth-child(5) { animation-delay: 0.25s; }
 
-/* Stagger cards */
-.insta-card:nth-child(1) { animation-delay: 0.1s; }
-.insta-card:nth-child(2) { animation-delay: 0.2s; }
-.insta-card:nth-child(3) { animation-delay: 0.3s; }
-.insta-card:nth-child(4) { animation-delay: 0.4s; }
-.insta-card:nth-child(5) { animation-delay: 0.5s; }
-.insta-card:nth-child(6) { animation-delay: 0.6s; }
-
-.insta-card:hover {
-  transform: translateY(-6px) scale(1.012);
-  border-color: #dd60ff;
-  box-shadow:
-    0 0 30px rgba(188,19,254,0.35),
-    0 0 80px rgba(188,19,254,0.12),
-    0 12px 40px rgba(0,0,0,0.6);
-}
-
-/* Corner accent on cards */
 .insta-card::before {
   content: '';
   position: absolute;
@@ -251,19 +194,23 @@
   width: 60px; height: 60px;
   background: linear-gradient(135deg, rgba(188,19,254,0.15) 0%, transparent 60%);
   pointer-events: none;
-  transition: opacity 0.3s;
   opacity: 0;
+  transition: opacity 0.3s;
 }
 .insta-card:hover::before { opacity: 1; }
-
+.insta-card:hover {
+  transform: translateY(-5px) scale(1.01);
+  border-color: #dd60ff;
+  box-shadow: 0 0 30px rgba(188,19,254,0.3), 0 12px 40px rgba(0,0,0,0.6);
+}
 @keyframes cardSlideIn {
   from { opacity: 0; transform: translateY(25px) scale(0.96); }
-  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 /* ── Card Header ── */
 .card-header {
-  padding: 15px;
+  padding: 14px 16px;
   font-weight: 900;
   color: var(--neon-violet);
   border-bottom: 1px solid #1a1a1a;
@@ -272,19 +219,16 @@
   align-items: center;
   gap: 8px;
   letter-spacing: 2px;
-  transition: color 0.3s ease;
+  font-size: 0.8rem;
+  transition: color 0.3s;
 }
-.insta-card:hover .card-header {
-  color: #e060ff;
-  text-shadow: 0 0 10px rgba(188,19,254,0.6);
-}
+.insta-card:hover .card-header { color: #e060ff; text-shadow: 0 0 10px rgba(188,19,254,0.6); }
 
 /* ── Image ── */
 .img-container {
   overflow: hidden;
   position: relative;
 }
-
 .img-container::after {
   content: '';
   position: absolute;
@@ -295,309 +239,355 @@
   pointer-events: none;
 }
 .insta-card:hover .img-container::after { opacity: 1; }
-
 .post-img {
   width: 100%;
   display: block;
   border-bottom: 1px solid #1a1a1a;
-  transform: scale(1);
-  filter: brightness(1) contrast(1);
   transition: transform 0.6s cubic-bezier(0.34,1.56,0.64,1), filter 0.4s ease;
 }
 .insta-card:hover .post-img {
-  transform: scale(1.06);
-  filter: brightness(1.1) contrast(1.15) saturate(1.2);
+  transform: scale(1.05);
+  filter: brightness(1.1) contrast(1.1) saturate(1.2);
 }
 
 /* ── Card Footer ── */
-.card-footer {
-  padding: 15px;
-  animation: none;
+.card-footer { padding: 14px 16px; }
+
+/* ── Interaction Row ── */
+.interaction-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
-/* ── Like Button ── */
-.like-btn {
+/* ── Action Buttons (Like + Comment) ── */
+.action-btn {
   background: transparent;
-  border: 1px solid var(--neon-violet);
-  color: white;
-  padding: 8px 15px;
-  border-radius: 20px;
+  border: 2px solid rgba(188,19,254,0.4);
+  border-radius: 12px;
+  color: #fff;
+  padding: 8px 16px;
   cursor: pointer;
-  font-weight: bold;
   font-family: 'Share Tech Mono', monospace;
-  margin-bottom: 10px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   position: relative;
   overflow: hidden;
-  transition:
-    background  0.3s ease,
-    box-shadow  0.3s ease,
-    transform   0.25s cubic-bezier(0.34,1.56,0.64,1),
-    color       0.3s ease;
+  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  animation: btnIdle 3s ease-in-out infinite;
 }
-
-.like-btn::before {
+.action-btn::before {
   content: '';
   position: absolute;
-  top: 50%; left: 50%;
-  translate: -50% -50%;
-  width: 0; height: 0;
-  border-radius: 50%;
-  background: rgba(188,19,254,0.3);
-  transition: width 0.5s ease, height 0.5s ease, opacity 0.5s ease;
+  inset: 0;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(188,19,254,0.12), transparent);
   opacity: 0;
+  transition: opacity 0.3s;
 }
-.like-btn:hover::before {
-  width: 200px; height: 200px;
-  opacity: 1;
+.action-btn:hover::before { opacity: 1; }
+.action-btn:hover {
+  border-color: var(--neon-violet);
+  color: #fff;
+  transform: translateY(-3px) scale(1.06);
+  box-shadow:
+    0 0 15px rgba(188,19,254,0.6),
+    0 0 40px rgba(188,19,254,0.2),
+    inset 0 0 12px rgba(188,19,254,0.08);
 }
+.action-btn:active { transform: scale(0.95); }
 
-.like-btn:hover {
-  background: var(--neon-violet);
-  color: #000;
-  box-shadow: 0 0 20px var(--neon-violet), 0 0 50px rgba(249, 10, 197, 0.864);
-  transform: scale(1.06) translateY(-2px);
-}
-.like-btn:active {
-  transform: scale(0.95);
+@keyframes btnIdle {
+  0%,100% { border-color: rgba(188,19,254,0.3); box-shadow: 0 0 5px rgba(188,19,254,0.1); }
+  50% { border-color: rgba(188,19,254,0.6); box-shadow: 0 0 12px rgba(188,19,254,0.3); }
 }
 
 /* Liked state */
 .like-btn.liked {
-  background: var(--neon-violet);
-  color: #000;
-  box-shadow: 0 0 20px var(--neon-violet);
-  animation: likePop 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  border-color: var(--neon-violet);
+  border-width: 2px;
+  color: var(--neon-violet);
+  box-shadow: 0 0 20px rgba(188,19,254,0.6), inset 0 0 12px rgba(188,19,254,0.15);
+  animation: likePop 0.4s cubic-bezier(0.34,1.56,0.64,1), btnIdle 3s ease-in-out infinite 0.4s;
 }
 @keyframes likePop {
-  0%   { transform: scale(1);    }
-  40%  { transform: scale(1.25); }
-  100% { transform: scale(1);    }
+  0% { transform: scale(1); }
+  40% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+/* Comment active state */
+.comment-btn.active {
+  border-color: var(--neon-violet);
+  color: var(--neon-violet);
+  box-shadow: 0 0 20px rgba(188,19,254,0.5), inset 0 0 12px rgba(188,19,254,0.1);
 }
 
 /* ── Caption ── */
 .caption {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   line-height: 1.6;
   font-family: 'Share Tech Mono', monospace;
   color: rgba(255,255,255,0.75);
+  margin-bottom: 8px;
   transition: color 0.3s;
 }
 .insta-card:hover .caption { color: rgba(255,255,255,0.95); }
 
-/* ── User Dot ── */
+/* ── View comments text ── */
+.view-comments-text {
+  font-size: 0.8rem;
+  color: #555;
+  cursor: pointer;
+  font-family: 'Share Tech Mono', monospace;
+  letter-spacing: 1px;
+  transition: color 0.3s;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+.view-comments-text:hover { color: var(--neon-violet); }
+
+/* ── Comments list ── */
+.comments-list {
+  margin-top: 10px;
+  padding-left: 10px;
+  border-left: 2px solid rgba(188,19,254,0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  animation: fadeSlideUp 0.3s ease both;
+}
+.comment-line {
+  font-size: 0.85rem;
+  color: #ccc;
+  font-family: 'Share Tech Mono', monospace;
+  line-height: 1.4;
+}
+.comment-author {
+  color: var(--neon-violet);
+  font-weight: 900;
+  margin-right: 6px;
+}
+
+/* ── Comment input row ── */
+.comment-input-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  align-items: center;
+}
+.comment-input {
+  flex: 1;
+  font-size: 0.8rem !important;
+  padding: 8px 12px !important;
+}
+.comment-post-btn {
+  background: transparent;
+  border: 1px solid var(--neon-violet);
+  border-radius: 8px;
+  color: var(--neon-violet);
+  padding: 8px 14px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+.comment-post-btn:hover {
+  background: var(--neon-violet);
+  color: #000;
+  box-shadow: 0 0 15px var(--neon-violet);
+}
+
+/* ── User dot ── */
 .user-dot {
   display: inline-block;
-  width: 8px;
-  height: 8px;
+  width: 8px; height: 8px;
   background: var(--neon-violet);
   border-radius: 50%;
-  margin-right: 6px;
+  margin-right: 4px;
   box-shadow: 0 0 10px var(--neon-violet);
   animation: dotPulse 2s ease-in-out infinite;
   flex-shrink: 0;
 }
-/* ── Interaction Row ── */
-.interaction-row {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 12px;
+@keyframes dotPulse {
+  0%,100% { box-shadow: 0 0 6px var(--neon-violet); transform: scale(1); }
+  50% { box-shadow: 0 0 18px var(--neon-violet); transform: scale(1.35); }
 }
-/* Shared styling for Like and Comment buttons */
-.action-btn {
-  background: transparent;
-  border: 1px solid rgba(188, 19, 254, 0.4);
-  color: white;
-  padding: 8px 16px;
-  border-radius: 20px;
+
+/* ── Floating + Button (FAB) ── */
+.fab-btn {
+  position: fixed;
+  bottom: 35px;
+  right: 35px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--neon-violet);
+  border: none;
+  color: #000;
+  font-size: 2rem;
+  font-weight: 900;
   cursor: pointer;
-  font-family: 'Share Tech Mono', monospace;
-  font-weight: bold;
+  z-index: 999;
+  box-shadow: 0 0 25px rgba(188,19,254,0.7), 0 0 60px rgba(188,19,254,0.3);
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
+  animation: fabPulse 3s ease-in-out infinite;
   display: flex;
   align-items: center;
-  gap: 8px;
-  transition: all 0.3s ease;
-  margin-bottom: 10px;
-}
-
-.action-btn:hover {
-  background: rgba(188, 19, 254, 0.1);
-  border-color: var(--neon-violet);
-  box-shadow: 0 0 15px var(--neon-violet);
-  transform: translateY(-2px);
-}
-
-.action-btn .icon {
-  font-size: 1.1rem;
+  justify-content: center;
   line-height: 1;
 }
+.fab-btn:hover {
+  transform: scale(1.15) rotate(90deg);
+  box-shadow: 0 0 40px rgba(188,19,254,0.9), 0 0 100px rgba(188,19,254,0.4);
+}
+.fab-btn:active { transform: scale(0.92); }
+@keyframes fabPulse {
+  0%,100% { box-shadow: 0 0 20px rgba(188,19,254,0.6), 0 0 50px rgba(188,19,254,0.2); }
+  50% { box-shadow: 0 0 40px rgba(188,19,254,0.9), 0 0 90px rgba(188,19,254,0.4); }
+}
 
-/* Specific styling for the Like button when active */
-/* Shared styling for Like and Comment buttons */
-/* Shared styling for Like and Comment buttons */
-.action-btn {
-  background: transparent !important;
-  border: 1px solid rgba(188, 19, 254, 0.4);
-  color: white;
-  padding: 8px 16px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-family: 'Share Tech Mono', monospace;
-  font-weight: bold;
+/* ── Modal Overlay ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
   display: flex;
   align-items: center;
-  gap: 8px;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Smooth pop effect */
-  margin-bottom: 10px;
+  justify-content: center;
+  animation: overlayFade 0.3s ease both;
+}
+@keyframes overlayFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-/* Hover effect: Glow Fades Outwards */
-.action-btn:hover {
-  background: transparent !important; 
-  border-color: var(--neon-violet);
-  /* The secret: large blur (20px) and slight spread (2px) to make it "fade" out */
-  box-shadow: 0 0 20px 2px rgba(188, 19, 254, 0.6); 
-  color: #fff;
-  transform: scale(1.05); /* Slight grow makes the fade feel more dynamic */
+/* ── Upload Modal ── */
+.upload-modal {
+  background: #080808;
+  border: 2px solid rgba(188,19,254,0.5);
+  border-radius: 16px;
+  width: 90%;
+  max-width: 420px;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 0 50px rgba(188,19,254,0.3), 0 0 120px rgba(188,19,254,0.1);
+  animation: modalPop 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes modalPop {
+  from { opacity: 0; transform: scale(0.85) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-/* When the button is LIKED */
-.like-btn.liked {
-  background: transparent !important;
-  border-color: var(--neon-violet);
-  border-width: 2px;
-  color: var(--neon-violet);
-  /* Constant outer halo */
-  box-shadow: 0 0 15px 1px rgba(188, 19, 254, 0.4);
-}
-
-/* Ensure icons don't glow internally */
-.action-btn .icon {
-  font-size: 1.1rem;
-  filter: drop-shadow(0 0 5px rgba(188, 19, 254, 0.3));
-}
-
-/* Hover effect: Glow the border only */
-.action-btn:hover {
-  /* Very slight tint, almost invisible */
-  border-color: var(--neon-violet);
-  box-shadow: 0 0 15px var(--neon-violet), inset 0 0 5px var(--neon-violet);
-  color: #fff; /* Keep text white */
-  transform: translateY(-2px);
-}
-
-/* When the button is LIKED: 
-   We still want the inside dark, just a brighter border */
-.like-btn.liked {
-  background: transparent; 
-  border-color: var(--neon-violet);
-   /* Make the border thicker to show it's active */
-  /* Make the number violet instead of filling the box */
-  box-shadow: 0 0 20px var(--neon-violet), inset 0 0 10px rgba(188, 19, 254, 0.2);
-}
-
-/* Fix for the icon inside the button */
-.action-btn .icon {
-  font-size: 1.1rem;
-  filter: drop-shadow(0 0 2px rgba(188, 19, 254, 0.5));
-}
-
-/* Comment section details */
-.view-comments-text {
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #1a1a1a;
+  font-family: 'Orbitron', sans-serif;
   font-size: 0.85rem;
-  color: #666;
-  cursor: pointer;
-  margin-top: 5px;
-  font-family: 'Share Tech Mono', monospace;
-}
-
-.view-comments-text:hover {
-  color: var(--neon-violet);
-}
-
-.comments-list {
-  margin-top: 12px;
-  padding-left: 10px;
-  border-left: 1px solid var(--neon-violet);
-  animation: fadeIn 0.4s ease;
-}
-
-.comment-line {
-  font-size: 0.9rem;
-  margin-bottom: 6px;
-  color: #eee;
-  font-family: 'Share Tech Mono', monospace;
-}
-
-.comment-author {
-  color: var(--neon-violet);
-  font-weight: bold;
-  margin-right: 6px;
-}
-
-@keyframes fadeOut{
-  from { opacity: 0; transform: translateY(-5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.comments-section {
-  margin-top: 15px;
-  padding: 10px;
-  background: rgba(188, 19, 254, 0.05);
-  border-left: 2px solid var(--neon-violet);
-  animation: feedFadeOut 0.3s ease-out;
-}
-
-.comment-item {
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 0.85rem;
-  color: #ccc;
-  margin-bottom: 8px;
-  line-height: 1.2;
-}
-
-.comment-user {
-  color: var(--neon-violet);
   font-weight: 900;
-  margin-right: 5px;
+  letter-spacing: 4px;
+  color: var(--neon-violet);
+  text-shadow: 0 0 10px var(--neon-violet);
+}
+.modal-close {
+  background: transparent;
+  border: 1px solid #333;
+  border-radius: 6px;
+  color: #666;
+  width: 28px; height: 28px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-close:hover { border-color: #ff4040; color: #ff4040; }
+
+.modal-form {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.view-comments {
+/* ── Image Drop Zone ── */
+.img-drop-zone {
+  width: 100%;
+  min-height: 160px;
+  border: 2px dashed rgba(188,19,254,0.35);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   font-family: 'Share Tech Mono', monospace;
   font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.4);
-  margin-top: 10px;
-  display: inline-block;
+  color: rgba(188,19,254,0.5);
+  letter-spacing: 2px;
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
-
-.view-comments:hover {
+.img-drop-zone:hover {
+  border-color: var(--neon-violet);
+  background: rgba(188,19,254,0.04);
+  box-shadow: 0 0 20px rgba(188,19,254,0.15);
   color: var(--neon-violet);
 }
-/* Centering the entire container */
-.community-page-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* This pulls everything to the center */
-  justify-content: center;
+.img-preview {
   width: 100%;
-  text-align: center;
+  height: 200px;
+  object-fit: cover;
+  display: block;
 }
 
-/* Fixing the Title specifically */
-.community-main-title {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 4rem;
-  color: #ffffff; /* Changes it from Red to White */
-  text-transform: uppercase;
-  letter-spacing: 10px;
-  margin: 0 auto 40px auto; /* 'auto' on left/right centers it */
-  
-  /* Applying a Purple glow instead of Red */
-  text-shadow: 
-    0 0 10px #bc13fe,
-    0 0 20px #bc13fe,
-    0 0 40px #bc13fe;
-    
-  /* Ensures it doesn't lean to the left */
-  display: block;
+/* ── Upload submit button ── */
+.upload-submit-btn {
   width: 100%;
+  padding: 13px;
+  background: var(--neon-violet);
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease;
+}
+.upload-submit-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s ease;
+}
+.upload-submit-btn:hover::before { left: 100%; }
+.upload-submit-btn:hover {
+  transform: scale(1.03) translateY(-2px);
+  box-shadow: 0 0 25px var(--neon-violet), 0 6px 20px rgba(188,19,254,0.4);
+}
+.upload-submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }

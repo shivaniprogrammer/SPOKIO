@@ -33,4 +33,7 @@ app.get('/', (req, res) => {
 // --- START SERVER ---
 app.listen(PORT, () => {
     console.log(`🚀 Server active on port ${PORT}`);
+
+    app.use('/api/community', require('./routes/community'));
+app.use('/uploads', express.static(require('path').join(__dirname, 'uploads')));
 });
