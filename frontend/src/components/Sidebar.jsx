@@ -26,7 +26,8 @@ const Sidebar = () => {
       />
 
       {/* Sidebar */}
-      <div className={`sidebar ${isCollapsed ? 'collapsed' : ''} ${isMobileOpen ? 'mobile-open' : ''}`}>
+      <div className={`sidebar ${!isMobileOpen && window.innerWidth > 768 && isCollapsed ? 'collapsed' : ''} ${isMobileOpen ? 'mobile-open' : ''}`}>
+    
         <div className="sidebar-glow"></div>
 
         {/* Desktop hamburger inside sidebar */}

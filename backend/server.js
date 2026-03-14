@@ -1,39 +1,38 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const app = express();
+const path = require('path');
 const mongoose = require('mongoose');
-app.use(cors()); 
-app.use(express.json()); 
 
-// --- ROUTES IMPORTS ---
-const authRoutes = require('./routes/auth'); 
-const caretakerRoutes = require('./routes/caretaker'); 
+const app = express();
 
+app.use(cors());
+app.use(express.json());
 
-const PORT = process.env.PORT || 5000;
+// --- STATIC FILES ---
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// --- MIDDLEWARE ---
+// --- ROUTES ---
+const authRoutes      = require('./routes/auth');
+const caretakerRoutes = require('./routes/caretaker');
+const communityRoutes = require('./routes/community');
 
-
-// --- DATABASE CONNECTION ---
-// Using the variable from your .env file
-mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/spokio')
-  .then(() => console.log("✅ Connected to MongoDB successfully!"))
-  .catch(err => console.error("❌ Database connection error:", err));
-
-// --- API ENDPOINTS ---
-app.use('/api/auth', authRoutes);
+app.use('/api/auth',      authRoutes);
 app.use('/api/caretaker', caretakerRoutes);
+app.use('/api/community', communityRoutes);
 
 app.get('/', (req, res) => {
-    res.send("Spokio Backend is active and running!");
+  res.send('Spokio Backend is active and running!');
 });
 
-// --- START SERVER ---
-app.listen(PORT, () => {
-    console.log(`🚀 Server active on port ${PORT}`);
+// --- DATABASE + SERVER START ---
+const PORT = process.env.PORT || 5000;
 
-    app.use('/api/community', require('./routes/community'));
-app.use('/uploads', express.static(require('path').join(__dirname, 'uploads')));
-});
+mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/spokio')
+  .then(() => {
+    console.log('✅ Connected to MongoDB successfully!');
+    app.listen(PORT, () => {
+      console.log(`🚀 Server active on port ${PORT}`);
+    });
+  })
+  .catch(err => console.error('❌ Database connection error:', err));
