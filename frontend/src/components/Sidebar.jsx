@@ -1,44 +1,66 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import './Sidebar.css';
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      if (!mobile) setIsMobileOpen(false);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const sidebarClass = [
+    'sidebar',
+    !isMobile && isCollapsed ? 'collapsed' : '',
+    isMobile && isMobileOpen ? 'mobile-open' : '',
+  ].filter(Boolean).join(' ');
 
   return (
     <>
       {/* Mobile hamburger OUTSIDE sidebar */}
-      <button
-        className={`hamburger mobile-hamburger ${isMobileOpen ? 'open' : ''}`}
-        onClick={() => setIsMobileOpen(!isMobileOpen)}
-        style={{ position: 'fixed', top: 16, left: 16, zIndex: 1001 }}
-      >
-        <span className="ham-line"></span>
-        <span className="ham-line"></span>
-        <span className="ham-line"></span>
-      </button>
-
-      {/* Overlay for mobile */}
-      <div
-        className={`sidebar-overlay ${isMobileOpen ? 'visible' : ''}`}
-        onClick={() => setIsMobileOpen(false)}
-      />
-
-      {/* Sidebar */}
-      <div className={`sidebar ${!isMobileOpen && window.innerWidth > 768 && isCollapsed ? 'collapsed' : ''} ${isMobileOpen ? 'mobile-open' : ''}`}>
-    
-        <div className="sidebar-glow"></div>
-
-        {/* Desktop hamburger inside sidebar */}
+      {isMobile && (
         <button
-          className={`hamburger ${isCollapsed ? '' : 'open'}`}
-          onClick={() => setIsCollapsed(!isCollapsed)}
+          className={`hamburger mobile-hamburger ${isMobileOpen ? 'open' : ''}`}
+          onClick={() => setIsMobileOpen(!isMobileOpen)}
+          style={{ position: 'fixed', top: 16, left: 16, zIndex: 1001 }}
         >
           <span className="ham-line"></span>
           <span className="ham-line"></span>
           <span className="ham-line"></span>
         </button>
+      )}
+
+      {/* Overlay for mobile */}
+      {isMobile && (
+        <div
+          className={`sidebar-overlay ${isMobileOpen ? 'visible' : ''}`}
+          onClick={() => setIsMobileOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <div className={sidebarClass}>
+        <div className="sidebar-glow"></div>
+
+        {/* Desktop hamburger inside sidebar */}
+        {!isMobile && (
+          <button
+            className={`hamburger ${isCollapsed ? '' : 'open'}`}
+            onClick={() => setIsCollapsed(!isCollapsed)}
+          >
+            <span className="ham-line"></span>
+            <span className="ham-line"></span>
+            <span className="ham-line"></span>
+          </button>
+        )}
 
         <div className="sidebar-logo">
           <div className="logo-icon">S</div>
